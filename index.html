@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#080808">
+<meta name="description" content="The AI Brief Q2: A live 6-hour hands-on AI workshop by the World's #1 AI Community. April 19th, 12PM ET.">
+<title>Evolving AI · The AI Brief: Q2 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+/* ═══════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  color-scheme: dark;
+  --bg:       #080808;
+  --bg2:      #0e0e0e;
+  --bg3:      #141414;
+  --bg4:      #1c1c1c;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(255,255,255,0.13);
+  --border3:  rgba(255,255,255,0.24);
+  --white:    #f0f0ee;
+  --muted:    rgba(240,240,238,0.68);
+  --dim:      rgba(240,240,238,0.40);
+  --faint:    rgba(240,240,238,0.07);
+
+  /* Fonts */
+  --mono:   'JetBrains Mono', monospace;   /* terminal only */
+  --sans:   'Sora', sans-serif;            /* UI, labels, body */
+  --serif:  'Sora', sans-serif;             /* display headlines */
+}
+
+html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--sans);
+  font-weight: 400;
+  overflow-x: hidden;
+  max-width: 100vw;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.65;
+}
+
+/* ── PROBLEM / VISION SECTION — highlighted ── */
+.pv-section {
+  background: var(--bg);
+  position: relative;
+}
+.pv-section::before {
+  content: '';
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 50%, rgba(255,255,255,0.03) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 50%, rgba(255,255,255,0.025) 0%, transparent 70%);
+}
+
+
+
+
+
+/* Subtle scanlines — dark only */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px);
+}
+
+a { color: inherit; text-decoration: none; }
+
+@keyframes blink   { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes pulse   { 0%,100%{opacity:1} 50%{opacity:.35} }
+@keyframes mq      { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+@keyframes fadeUp  { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+/* ═══════════════════════════════
+   URGENCY BAR
+═══════════════════════════════ */
+.urgency-bar {
+  background: var(--white); color: #000;
+  display: flex; align-items: stretch;
+  font-family: var(--sans); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.2px; width: 100%; overflow: hidden;
+}
+.urgency-bar .u-chunk {
+  flex: 1; min-width: 0;
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; padding: 10px 8px;
+  border-right: 1px solid rgba(0,0,0,0.12);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.urgency-bar .u-chunk:last-child { border-right: none; }
+.urgency-bar .u-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  background: #000; animation: pulse 1.8s ease-in-out infinite;
+}
+#countdown { font-family: var(--mono); font-weight: 700; letter-spacing: 0.5px; font-size: 11px; white-space: nowrap; }
+
+/* ═══════════════════════════════
+   NAV
+═══════════════════════════════ */
+nav {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(8,8,8,0.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border2);
+}
+.nav-sys {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 7px 64px; border-bottom: 1px solid var(--border);
+  font-family: var(--mono); font-size: 9px; letter-spacing: 1.5px; color: var(--dim);
+}
+.sys-live { display: flex; align-items: center; gap: 7px; }
+.sys-dot  { width: 6px; height: 6px; border-radius: 50%; background: var(--white); animation: pulse 2s ease-in-out infinite; }
+.nav-main {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 64px;
+}
+.nav-logo {
+  font-family: var(--sans); font-size: 16px; font-weight: 800;
+  letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px;
+}
+.nav-logo .prompt { font-family: var(--mono); color: var(--dim); font-weight: 400; font-size: 13px; }
+.nav-logo .box { background: var(--white); color: #000; padding: 2px 9px; font-size: 13px; font-weight: 800; }
+.nav-links { display: flex; }
+.nav-links a {
+  color: var(--dim); font-size: 13px; font-weight: 500;
+  padding: 8px 18px; border: 1px solid transparent; transition: all .15s;
+}
+.nav-links a:hover { color: var(--white); border-color: var(--border2); background: var(--faint); }
+.nav-cta {
+  background: var(--white); color: #000; font-weight: 700;
+  font-size: 13px; padding: 11px 26px; transition: opacity .15s;
+}
+.nav-cta:hover { opacity: .82; }
+
+/* ═══════════════════════════════
+   HERO
+═══════════════════════════════ */
+.hero {
+  padding: 88px 64px 72px; border-bottom: 1px solid var(--border2);
+  position: relative; overflow: hidden;
+}
+.hero-dotgrid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.055) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 80% at 65% 40%, black 20%, transparent 80%);
+  mask-image: radial-gradient(ellipse 70% 80% at 65% 40%, black 20%, transparent 80%);
+}
+.hero-inner {
+  display: grid; grid-template-columns: 1.1fr 1fr;
+  gap: 80px; align-items: center; position: relative; z-index: 1;
+}
+/* Terminal window */
+.term-win {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 12px; overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.04);
+}
+.term-bar {
+  background: var(--bg3); border-bottom: 1px solid var(--border2);
+  padding: 12px 18px; display: flex; align-items: center; gap: 8px;
+}
+.term-btns { display: flex; gap: 6px; }
+.tb { width: 11px; height: 11px; border-radius: 50%; background: #2a2a2a; }
+.tb.on { background: var(--white); }
+.term-label { font-family: var(--mono); font-size: 10px; color: var(--dim); letter-spacing: .8px; margin-left: 6px; }
+.term-body { padding: 24px 28px; font-family: var(--mono); }
+.tl { display: block; font-size: 12px; line-height: 2.0; }
+.tp { color: var(--dim); }
+.tc { color: var(--white); }
+.to { color: var(--muted); padding-left: 18px; font-size: 11px; display: block; line-height: 1.9; }
+.to.w { color: var(--white); }
+.tb-blank { display: block; height: 6px; }
+/* Hero text side */
+.hero-right { position: relative; z-index: 1; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--faint); border: 1px solid var(--border2);
+  font-family: var(--mono); font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--dim); padding: 7px 14px; margin-bottom: 28px;
+}
+.hero-tag .live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--white); animation: pulse 1.5s ease-in-out infinite; }
+.hero-headline {
+  font-family: var(--serif); font-weight: 900;
+  font-size: clamp(48px, 5.5vw, 80px);
+  letter-spacing: -2px; line-height: .98; margin-bottom: 24px;
+}
+/* "Every Quarter." — outlined ghost treatment */
+.hero-outline {
+  display: block;
+  -webkit-text-stroke: 1.5px rgba(240,240,238,0.45);
+  color: transparent;
+  font-weight: 900;
+}
+.hero-sub {
+  font-size: 17px; color: var(--muted); line-height: 1.8;
+  margin-bottom: 24px; font-weight: 300; max-width: 440px;
+}
+.hero-date-pill {
+  display: inline-flex; align-items: center; gap: 0;
+  border: 1px solid var(--border3); margin-bottom: 32px; overflow: hidden;
+}
+.date-chunk {
+  padding: 10px 18px; font-family: var(--sans); font-size: 13px;
+  font-weight: 600; color: var(--white); letter-spacing: 0.3px;
+}
+.date-sep { width: 1px; background: var(--border2); align-self: stretch; }
+.hero-ctas { display: flex; flex-direction: column; gap: 10px; margin-bottom: 0; }
+.cta-primary {
+  background: var(--white); color: #000; font-weight: 800;
+  font-size: 15px; padding: 18px 36px; display: block; text-align: center;
+  letter-spacing: -0.2px; transition: opacity .15s;
+}
+.cta-primary:hover { opacity: .85; }
+.cta-secondary {
+  border: 1px solid var(--border2); color: var(--muted);
+  font-size: 14px; padding: 13px 36px; display: block; text-align: center;
+  font-weight: 500; transition: all .15s;
+}
+.cta-secondary:hover { border-color: var(--border3); color: var(--white); }
+
+/* Stat strip */
+.hero-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border2); border-bottom: 1px solid var(--border2);
+  margin-top: 64px; position: relative; z-index: 1;
+}
+.hstat { padding: 22px 28px; border-right: 1px solid var(--border2); }
+.hstat:last-child { border-right: none; }
+.hstat-key {
+  font-family: var(--sans); font-size: 11px; font-weight: 500;
+  letter-spacing: 0.3px; color: var(--muted); margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.hstat-val {
+  font-family: var(--serif); font-size: 32px; font-weight: 900;
+  letter-spacing: -1px; line-height: 1;
+}
+
+/* ═══════════════════════════════
+   PROOF STRIP
+═══════════════════════════════ */
+.proof-strip {
+  border-bottom: 1px solid var(--border2);
+  background: var(--bg2);
+}
+.proof-strip-inner {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+}
+.proof-item {
+  padding: 28px 32px;
+  border-right: 1px solid var(--border2);
+}
+.proof-item:last-child { border-right: none; }
+.proof-item-date {
+  background: rgba(255,255,255,0.04);
+  border-right: 1px solid var(--border3) !important;
+}
+.proof-num {
+  font-family: var(--serif); font-size: 32px; font-weight: 900;
+  letter-spacing: -1px; line-height: 1; margin-bottom: 6px;
+}
+.proof-item-date .proof-num { font-size: 26px; letter-spacing: -0.5px; }
+.proof-txt {
+  font-family: var(--sans); font-size: 12px; font-weight: 400;
+  color: var(--muted); line-height: 1.45;
+}
+.proof-partners {
+  margin-top: 8px; font-size: 11px; font-weight: 600;
+  color: var(--white); letter-spacing: 0.3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* Remove old label col style */
+.proof-label-col { display: none; }
+
+/* ═══════════════════════════════
+   MARQUEE
+═══════════════════════════════ */
+.marquee-bar {
+  overflow: hidden; padding: 13px 0;
+  border-bottom: 1px solid var(--border2); background: var(--bg3);
+}
+.m-inner { display: flex; white-space: nowrap; animation: mq 30s linear infinite; }
+.m-inner span {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; padding: 0 22px; color: var(--dim);
+}
+.m-inner span.hi { color: rgba(240,240,238,.6); }
+
+/* ═══════════════════════════════
+   SECTION BASE
+═══════════════════════════════ */
+.section { padding: 120px 64px; border-bottom: 1px solid var(--border2); }
+.section.alt  { background: var(--bg2); }
+.section.dark { background: var(--bg3); }
+
+.sec-tag {
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--muted); background: var(--faint); border: 1px solid var(--border2); padding: 5px 13px;
+}
+.sec-head {
+  font-family: var(--serif); font-size: clamp(40px, 5vw, 68px);
+  font-weight: 900; letter-spacing: -1.5px; line-height: 1.05; margin-bottom: 16px;
+}
+.sec-head .italic { font-style: normal; font-weight: 700; }
+.sec-head .stroke { -webkit-text-stroke: 1px rgba(240,240,238,.4); color: transparent; }
+.sec-sub {
+  font-size: 18px; color: var(--muted); line-height: 1.85;
+  max-width: 600px; font-weight: 300; margin-bottom: 64px;
+}
+
+.section-cta-wrap { text-align: center; margin-top: 64px; }
+.section-cta-wrap .cta-primary { display: inline-block; max-width: 420px; }
+
+/* ═══════════════════════════════
+   PROBLEM / VISION
+═══════════════════════════════ */
+/* ═══════════════════════════════
+   PROBLEM / VISION
+═══════════════════════════════ */
+.pain-headline {
+  font-family: var(--serif); font-size: clamp(32px, 4vw, 54px);
+  font-weight: 900; letter-spacing: -1.5px; line-height: 1.1;
+  margin-bottom: 56px; text-align: center;
+}
+.pain-headline .stroke { -webkit-text-stroke: 1px rgba(240,240,238,.4); color: transparent; }
+
+.pain-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border: 1px solid var(--border2);
+}
+
+/* Problem card — dimmer, muted */
+.pain-card {
+  padding: 60px 56px; position: relative; overflow: hidden;
+  background: var(--bg2);
+  border-right: 1px solid var(--border2);
+}
+/* Thin top accent */
+.pain-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: var(--border2);
+}
+/* Vision card — brighter, elevated */
+.pain-card.vision {
+  background: var(--bg3);
+  border-right: none;
+}
+.pain-card.vision::after {
+  background: var(--white);
+}
+
+.pain-card-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 28px;
+  display: flex; align-items: center; gap: 8px;
+}
+.label-dot { width: 7px; height: 7px; border-radius: 50%; }
+.label-dot.off { background: rgba(240,240,238,.2); }
+.label-dot.on  { background: var(--white); box-shadow: 0 0 10px rgba(240,240,238,.6); }
+
+.pain-title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 2.8vw, 40px);
+  font-weight: 900; letter-spacing: -0.5px; margin-bottom: 20px; line-height: 1.1;
+}
+/* Problem title slightly muted */
+.pain-card:not(.vision) .pain-title { color: rgba(240,240,238,.75); }
+
+.pain-body {
+  font-size: 16px; color: var(--muted); line-height: 1.85;
+  margin-bottom: 32px; font-weight: 300;
+  padding-bottom: 32px; border-bottom: 1px solid var(--border);
+}
+
+.pain-list { list-style: none; display: flex; flex-direction: column; }
+.pain-list li {
+  font-size: 15px; color: var(--muted); padding: 16px 0;
+  border-bottom: 1px solid var(--border); line-height: 1.6;
+  display: flex; gap: 16px; align-items: flex-start; font-weight: 300;
+}
+.pain-list li:last-child { border-bottom: none; padding-bottom: 0; }
+
+/* Problem — dash marker */
+.pain-marker {
+  font-family: var(--mono); font-size: 14px; font-weight: 400;
+  color: var(--dim); flex-shrink: 0; margin-top: 1px; line-height: 1.6;
+}
+/* Vision — boxed check marker */
+.pain-marker.check {
+  width: 22px; height: 22px;
+  border: 1px solid rgba(240,240,238,.35);
+  background: rgba(240,240,238,.06);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+  font-size: 11px; font-weight: 800;
+  color: var(--white); font-family: var(--sans);
+  letter-spacing: 0;
+}
+/* Vision list items slightly brighter */
+.pain-card.vision .pain-list li { color: rgba(240,240,238,.7); }
+
+.pain-foot {
+  margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border);
+  font-size: 12px; font-family: var(--mono); color: var(--dim);
+  letter-spacing: 0.5px; line-height: 1.65;
+}
+
+/* ═══════════════════════════════
+   INSTRUCTOR
+═══════════════════════════════ */
+.inst-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 96px; align-items: center; }
+.inst-visual {
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 8px; overflow: hidden; width: 100%; max-width: 100%;
+  box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+}
+.inst-term-bar {
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  padding: 10px 16px; display: flex; gap: 6px; align-items: center;
+}
+.itb { width: 10px; height: 10px; border-radius: 50%; background: #2a2a2a; flex-shrink: 0; }
+.itb.on { background: var(--white); }
+.inst-visual-body { padding: 36px 32px; overflow: hidden; }
+.inst-brand {
+  font-family: var(--sans); font-size: clamp(24px, 3.5vw, 44px);
+  font-weight: 900; letter-spacing: -1px;
+  display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+  flex-wrap: nowrap; overflow: hidden; max-width: 100%;
+}
+.inst-brand-box {
+  background: var(--white); color: #000;
+  padding: 3px 10px; font-size: clamp(22px, 3.2vw, 42px);
+  font-weight: 900; flex-shrink: 0; display: inline-block;
+}
+.inst-tagline { font-family: var(--mono); font-size: 10px; color: var(--dim); letter-spacing: 1.5px; white-space: nowrap; }
+
+.inst-name {
+  font-family: var(--serif); font-size: 44px; font-weight: 700;
+  letter-spacing: -1px; margin-bottom: 6px;
+}
+.inst-role {
+  font-family: var(--sans); font-size: 12px; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim); margin-bottom: 28px;
+}
+.inst-desc { font-size: 17px; color: var(--muted); line-height: 1.85; font-weight: 300; }
+.inst-desc p + p { margin-top: 18px; }
+.inst-creds { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 32px; }
+.cred-item { background: var(--bg3); border: 1px solid var(--border); padding: 18px 20px; }
+.cred-num { font-family: var(--serif); font-size: 26px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 4px; }
+.cred-lbl { font-size: 12px; font-weight: 400; color: var(--muted); line-height: 1.4; }
+
+/* ═══════════════════════════════
+   OUTCOMES — row layout
+═══════════════════════════════ */
+.outcomes-list { display: flex; flex-direction: column; gap: 0; }
+.outcome-row {
+  display: grid; grid-template-columns: 80px 1fr;
+  gap: 40px; align-items: start;
+  padding: 36px 0; border-bottom: 1px solid var(--border);
+  transition: padding-left .2s;
+}
+.outcome-row:last-child { border-bottom: none; }
+.outcome-row:hover { padding-left: 8px; }
+.outcome-row-num {
+  font-family: var(--mono); font-size: 13px; font-weight: 700;
+  color: var(--muted); letter-spacing: 1px; padding-top: 4px;
+}
+.outcome-row-title {
+  font-size: 22px; font-weight: 700; letter-spacing: -0.4px;
+  margin-bottom: 6px; line-height: 1.25;
+}
+.outcome-row-desc {
+  font-size: 15px; color: var(--muted); font-weight: 300; line-height: 1.6;
+}
+
+/* ═══════════════════════════════
+   STEPS — timeline layout
+═══════════════════════════════ */
+.steps-timeline {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 20px; position: relative; margin-top: 56px;
+}
+.steps-timeline .step-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  padding: 40px 36px; position: relative;
+}
+.steps-timeline .step-card::before {
+  content: '';
+  position: absolute; top: 60px; right: -11px;
+  width: 22px; height: 1px; background: var(--border2);
+  z-index: 2;
+}
+.steps-timeline .step-card:last-child::before { display: none; }
+.steps-timeline .step-card:nth-child(even) { background: rgba(255,255,255,0.03); }
+
+
+
+/* ═══════════════════════════════
+   MODULES
+═══════════════════════════════ */
+.modules-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; }
+.module-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  padding: 48px 44px; transition: border-color .2s, background .2s;
+}
+.module-card:hover { border-color: var(--border2); background: rgba(255,255,255,0.03); }
+.module-hdr { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; }
+.m-tag {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted);
+  display: flex; align-items: center; gap: 8px;
+}
+.m-tag::before { content: ''; width: 14px; height: 1px; background: var(--dim); }
+.m-corner { width: 8px; height: 8px; border-top: 1px solid var(--border2); border-right: 1px solid var(--border2); flex-shrink: 0; margin-top: 2px; }
+.m-title {
+  font-family: var(--serif); font-size: 21px; font-weight: 700;
+  letter-spacing: -0.3px; line-height: 1.25; margin-bottom: 18px;
+}
+.m-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.m-list li {
+  font-size: 14px; color: var(--muted); line-height: 1.75;
+  padding-left: 18px; position: relative; font-weight: 300;
+}
+/* Module accordion */
+.m-trigger { cursor: pointer; user-select: none; }
+.m-chevron {
+  font-family: var(--mono); font-size: 18px; color: var(--dim);
+  transition: transform .25s, color .15s; flex-shrink: 0; line-height: 1;
+  display: none;
+}
+.m-body { overflow: hidden; transition: max-height .35s ease, opacity .3s ease; max-height: 400px; opacity: 1; }
+/* Tablet + Mobile: accordion active */
+@media (max-width: 1024px) {
+  .m-chevron { display: block; }
+  .module-card { cursor: pointer; }
+  .m-body { max-height: 0; opacity: 0; pointer-events: none; }
+  .module-card.open .m-chevron { transform: rotate(45deg); color: var(--white); }
+  .module-card.open .m-body { max-height: 400px; opacity: 1; pointer-events: auto; margin-top: 4px; }
+  .m-title { margin-bottom: 0; transition: margin-bottom .2s; }
+  .module-card.open .m-title { margin-bottom: 12px; }
+}
+.m-list li strong { color: var(--white); font-weight: 600; }
+
+/* ═══════════════════════════════
+   HOW IT WORKS
+═══════════════════════════════ */
+/* .steps-track removed — replaced by .steps-timeline */
+.s-num {
+  font-family: var(--mono); font-size: 52px; font-weight: 700;
+  color: rgba(240,240,238,0.18); line-height: 1; margin-bottom: 18px; letter-spacing: -2px;
+}
+.s-title { font-family: var(--serif); font-size: 20px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.3px; }
+.s-body { font-size: 14px; color: var(--muted); line-height: 1.75; font-weight: 300; }
+
+/* ═══════════════════════════════
+   INCLUDED
+═══════════════════════════════ */
+.inc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.inc-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  padding: 36px 32px; transition: border-color .2s;
+  display: flex; flex-direction: column;
+}
+.inc-card:hover { border-color: var(--border2); }
+.inc-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.inc-idx {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--dim);
+}
+.inc-glyph {
+  width: 44px; height: 44px; border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  color: var(--white); flex-shrink: 0; background: var(--faint);
+  letter-spacing: 1px;
+}
+.inc-title {
+  font-size: 20px; font-weight: 800; margin-bottom: 10px;
+  letter-spacing: -0.3px; line-height: 1.2;
+}
+.inc-body  { font-size: 14px; color: var(--muted); line-height: 1.75; font-weight: 300; }
+.inc-note  { font-family: var(--mono); font-size: 10px; color: var(--dim); margin-top: 8px; letter-spacing: .3px; font-style: italic; }
+
+/* ═══════════════════════════════
+   TRUST BAND
+═══════════════════════════════ */
+.trust-band {
+  padding: 120px 64px; text-align: center; position: relative; overflow: hidden;
+  border-bottom: 1px solid var(--border2);
+}
+.trust-band::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  -webkit-mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, black 20%, transparent 80%);
+  mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, black 20%, transparent 80%);
+}
+.trust-text {
+  font-family: var(--serif); font-size: clamp(40px, 6.5vw, 90px);
+  font-weight: 900; letter-spacing: -2.5px; line-height: .95; position: relative; z-index: 1;
+}
+.trust-text .stroke { -webkit-text-stroke: 1.5px rgba(240,240,238,.4); color: transparent; }
+
+/* ═══════════════════════════════
+   PRICING
+═══════════════════════════════ */
+.pricing-wrapper { max-width: 920px; margin: 0 auto; }
+.pricing-single { max-width: 560px; margin: 0 auto; }
+.pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.price-card { background: var(--bg3); border: 1px solid var(--border); padding: 56px 52px; position: relative; }
+.price-card.feat {
+  border-color: var(--border3);
+  background: rgba(255,255,255,0.06);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
+}
+.price-popular {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--white); color: #000; font-family: var(--mono);
+  font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  padding: 5px 18px; white-space: nowrap;
+}
+.p-tier { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--dim); margin-bottom: 8px; }
+.p-name { font-family: var(--serif); font-size: 28px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 20px; }
+.p-price-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 8px; }
+.p-dollar { font-size: 22px; font-weight: 700; color: var(--muted); margin-top: 6px; }
+.p-amount { font-family: var(--serif); font-size: 80px; font-weight: 900; letter-spacing: -3px; line-height: 1; }
+.p-period { font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim); display: block; margin-bottom: 20px; }
+.p-desc { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 20px; font-weight: 300; }
+.p-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
+.p-features { list-style: none; display: flex; flex-direction: column; margin-bottom: 36px; }
+.p-features li {
+  font-size: 14px; color: var(--muted); display: flex; gap: 12px;
+  padding: 13px 0; border-bottom: 1px solid var(--border); line-height: 1.5; font-weight: 300;
+}
+.p-features li:last-child { border-bottom: none; padding-bottom: 0; }
+.p-features li::before { content: '✓'; color: var(--white); flex-shrink: 0; font-weight: 800; }
+.p-cta {
+  display: block; text-align: center; padding: 17px; font-weight: 800;
+  font-size: 14px; border: 1px solid var(--border2); color: var(--white); transition: all .2s;
+  letter-spacing: -0.1px;
+}
+.price-card.feat .p-cta { background: var(--white); color: #000; border-color: var(--white); }
+.p-cta:hover { background: var(--white); color: #000; border-color: var(--white); }
+.pricing-footnote {
+  text-align: center; margin-top: 20px;
+  font-family: var(--mono); font-size: 10px; color: var(--dim); letter-spacing: 1px;
+}
+
+/* ═══════════════════════════════
+   GUARANTEE
+═══════════════════════════════ */
+.guarantee-box {
+  max-width: 880px; margin: 0 auto;
+  background: var(--bg3); border: 1px solid var(--border2); padding: 64px;
+  display: flex; gap: 48px; align-items: flex-start;
+}
+.g-icon-box {
+  width: 68px; height: 68px; flex-shrink: 0;
+  background: var(--faint); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 22px; color: var(--white);
+}
+.g-title { font-family: var(--serif); font-size: 28px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 16px; }
+.g-body { font-size: 16px; color: var(--muted); line-height: 1.9; font-weight: 300; }
+.g-body strong { color: var(--white); font-weight: 600; }
+.g-note { font-size: 13px; color: var(--dim); line-height: 1.8; margin-top: 16px; }
+
+/* ═══════════════════════════════
+   FAQ
+═══════════════════════════════ */
+.faq-inner { max-width: 800px; margin: 56px auto 0; }
+.faq-item {
+  border: 1px solid var(--border); margin-bottom: -1px;
+  cursor: pointer; transition: border-color .15s; position: relative; z-index: 1;
+}
+.faq-item:hover, .faq-item.open { border-color: var(--border2); z-index: 2; }
+.faq-q {
+  font-family: var(--sans); font-size: 16px; font-weight: 600;
+  padding: 22px 24px; display: flex; align-items: center;
+  gap: 16px; user-select: none;
+}
+.faq-q::before {
+  content: '//'; font-family: var(--mono); font-size: 10px;
+  color: var(--dim); flex-shrink: 0; font-weight: 400; letter-spacing: 1px;
+  width: 20px;
+}
+.faq-q-text { flex: 1; text-align: left; }
+.faq-icon {
+  flex-shrink: 0; width: 24px; height: 24px; border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 16px; color: var(--dim); transition: all .15s;
+}
+.faq-item.open .faq-icon { background: var(--white); color: #000; border-color: var(--white); }
+.faq-a {
+  font-size: 15px; color: var(--muted); line-height: 1.85; font-weight: 300;
+  padding: 20px 24px 24px; border-top: 1px solid var(--border); display: none;
+}
+
+/* ═══════════════════════════════
+   FINAL CTA
+═══════════════════════════════ */
+.final-cta {
+  padding: 140px 64px; text-align: center;
+  background: var(--bg2); position: relative; overflow: hidden;
+}
+.final-cta::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, black 20%, transparent 100%);
+  mask-image: radial-gradient(ellipse 60% 80% at 50% 50%, black 20%, transparent 100%);
+}
+.final-eyebrow {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 20px; position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+}
+.final-eyebrow::before, .final-eyebrow::after { content: '——'; }
+.final-headline {
+  font-family: var(--serif); font-size: clamp(56px, 8.5vw, 116px); font-weight: 900;
+  letter-spacing: -3px; line-height: .95; margin-bottom: 20px; position: relative; z-index: 1;
+}
+.final-headline .italic { font-style: normal; font-weight: 700; }
+.final-headline .stroke { -webkit-text-stroke: 1.5px rgba(240,240,238,.4); color: transparent; }
+.final-sub { font-size: 18px; color: var(--muted); margin-bottom: 48px; font-weight: 300; position: relative; z-index: 1; }
+.final-btns { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; position: relative; z-index: 1; }
+.final-btns .fp { background: var(--white); color: #000; font-weight: 800; font-size: 15px; padding: 18px 56px; transition: opacity .15s; }
+.final-btns .fp:hover { opacity: .82; }
+.final-btns .fs { border: 1px solid var(--border2); color: var(--muted); font-size: 15px; padding: 17px 40px; transition: all .15s; }
+.final-btns .fs:hover { border-color: var(--border3); color: var(--white); }
+.final-urgency { margin-top: 24px; font-family: var(--mono); font-size: 10px; color: var(--dim); letter-spacing: 1.5px; position: relative; z-index: 1; }
+
+/* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border2); padding: 28px 44px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim);
+}
+
+/* ═══════════════════════════════
+   MOBILE STICKY CTA
+═══════════════════════════════ */
+.mob-sticky {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0;
+  z-index: 300; background: var(--bg2); border-top: 1px solid var(--border2);
+  padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+}
+.mob-sticky-meta {
+  display: flex; justify-content: space-between;
+  font-family: var(--sans); font-size: 12px; color: var(--dim); margin-bottom: 10px;
+  font-weight: 500;
+}
+.mob-sticky-btn {
+  display: block; background: var(--white); color: #000; text-align: center;
+  font-weight: 800; font-size: 17px; padding: 18px; width: 100%;
+}
+
+/* ═══════════════════════════════
+   REVEAL ANIMATION
+═══════════════════════════════ */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .65s ease, transform .65s ease; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════
+   RESPONSIVE — WIDE TABLET (1024-1280)
+═══════════════════════════════ */
+@media (max-width: 1280px) {
+  .nav-sys  { padding: 7px 40px; }
+  .nav-main { padding: 16px 40px; }
+  .hero     { padding: 72px 48px 64px; }
+  .section  { padding: 100px 48px; }
+  .trust-band { padding: 100px 48px; }
+  .final-cta  { padding: 120px 48px; }
+}
+
+/* ═══════════════════════════════
+   RESPONSIVE — TABLET (769-1024)
+═══════════════════════════════ */
+@media (max-width: 1024px) {
+  /* nav */
+  .nav-sys  { padding: 7px 28px; }
+  .nav-main { padding: 14px 28px; }
+
+  /* hero — stack terminal above copy */
+  .hero { padding: 56px 32px 52px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .hero-right { order: -1; }
+  .term-win   { width: 100%; max-width: 100%; }
+  .hero-headline { font-size: 52px; letter-spacing: -1.5px; }
+
+  /* sections */
+  .section    { padding: 80px 32px; }
+  .trust-band { padding: 80px 32px; }
+  .final-cta  { padding: 100px 32px; }
+
+  /* instructor */
+  .inst-grid    { grid-template-columns: 1fr; gap: 48px; }
+  .inst-visual  { width: 100%; aspect-ratio: 16/7; }
+  .inst-brand   { font-size: 32px; }
+  .inst-brand-box { font-size: 32px; padding: 3px 10px; }
+
+  /* steps — 2 col */
+  .steps-timeline { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .steps-timeline .step-card::before { display: none; }
+
+  /* included — 2 col */
+  .inc-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* proof strip — 3 col */
+  .proof-strip-inner { grid-template-columns: repeat(3, 1fr); }
+  .proof-item:nth-child(3n) { border-right: none; }
+  .proof-item:nth-child(n+4) { border-top: 1px solid var(--border2); }
+  .proof-item { padding: 24px 20px; }
+
+  /* grids */
+  .pain-grid    { grid-template-columns: 1fr 1fr; }
+  .modules-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .pricing-grid { gap: 16px; }
+}
+
+/* ═══════════════════════════════
+   RESPONSIVE — MOBILE (≤768px)
+═══════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* nav */
+  .nav-sys   { display: none; }
+  .nav-main  { padding: 14px 20px; }
+  .nav-links { display: none; }
+  .nav-cta   { display: none; }
+
+  /* urgency bar */
+  .urgency-bar { font-size: 11px; }
+  .urgency-bar .u-chunk { padding: 10px 8px; gap: 5px; }
+  #countdown { font-size: 11px; letter-spacing: 0.5px; }
+
+  /* hero */
+  .hero { padding: 36px 20px 36px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 0; }
+  .hero-right { order: -1; }
+  .term-win   { display: none; }
+  /* Tag: compact, no wrap */
+  .hero-tag   { margin-bottom: 20px; font-size: 8px; letter-spacing: 1.5px; padding: 6px 12px; }
+  /* Headline: tighter so Every Quarter. stays on one line */
+  .hero-headline { font-size: 34px; letter-spacing: -0.8px; line-height: 1.06; margin-bottom: 20px; }
+  .hero-outline  { -webkit-text-stroke-width: 1px; }
+  .hero-sub   { font-size: 15px; max-width: 100%; margin-bottom: 22px; line-height: 1.75; }
+  /* Date pill: single line, smaller text, less padding */
+  .hero-date-pill { width: 100%; margin-bottom: 24px; }
+  .date-chunk { font-size: 11px; padding: 11px 6px; text-align: center; flex: 1; white-space: nowrap; overflow: hidden; }
+  .date-sep   { flex-shrink: 0; }
+  .hero-ctas  { gap: 10px; margin-bottom: 0; }
+  .cta-primary   { font-size: 15px; padding: 18px 20px; min-height: 56px; }
+  .cta-secondary { font-size: 14px; padding: 15px 20px; min-height: 52px; }
+
+  /* proof strip */
+  .proof-strip-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border2);
+  }
+  .proof-item {
+    padding: 18px 16px;
+    border: none;
+    background: var(--bg2);
+  }
+  .proof-item-date { background: rgba(255,255,255,0.04); }
+  /* Last item spans full width — keep same vertical card style as others */
+  .proof-item:nth-child(5) {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0;
+  }
+  .proof-item:nth-child(5) .proof-num {
+    font-size: 28px; margin-bottom: 0;
+    padding: 18px 16px;
+    border-right: 1px solid var(--border2);
+    display: flex; align-items: center;
+  }
+  .proof-item:nth-child(5) .proof-txt {
+    padding: 18px 16px;
+    display: flex; align-items: center;
+    font-size: 12px;
+  }
+  .proof-num { font-size: 24px; }
+  .proof-item-date .proof-num { font-size: 22px; }
+  .proof-txt { font-size: 11px; }
+
+  /* sections */
+  .section  { padding: 60px 20px; }
+  .sec-head { font-size: 32px; letter-spacing: -0.5px; }
+  .sec-sub  { font-size: 15px; margin-bottom: 32px; }
+  .section-cta-wrap { margin-top: 36px; }
+
+  /* problem / vision */
+  .pain-headline { font-size: 26px; letter-spacing: -0.3px; margin-bottom: 32px; }
+  .pain-grid  { grid-template-columns: 1fr; border: 1px solid var(--border2); }
+  .pain-card  { padding: 36px 24px; border-right: none; border-bottom: 1px solid var(--border2); }
+  .pain-card.vision { border-bottom: none; }
+  .pain-title { font-size: 24px; }
+  .pain-body  { font-size: 14px; margin-bottom: 20px; padding-bottom: 20px; }
+  .pain-list li { font-size: 14px; padding: 13px 0; }
+  .pain-foot  { margin-top: 20px; }
+
+  /* instructor */
+  .inst-grid   { grid-template-columns: 1fr; gap: 32px; }
+  .inst-visual { display: none; }
+  .inst-name   { font-size: 26px; }
+  .inst-role   { font-size: 11px; }
+  .inst-desc   { font-size: 14px; }
+  .inst-creds  { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .cred-item   { padding: 14px 14px; }
+  .cred-num    { font-size: 20px; }
+  .cred-lbl    { font-size: 11px; }
+
+  /* outcomes */
+  .outcome-row { grid-template-columns: 40px 1fr; gap: 14px; padding: 22px 0; }
+  .outcome-row:hover { padding-left: 0; }
+  .outcome-row-num   { font-size: 10px; padding-top: 2px; }
+  .outcome-row-title { font-size: 16px; }
+  .outcome-row-desc  { font-size: 13px; }
+
+  /* modules */
+  .modules-grid { grid-template-columns: 1fr; gap: 12px; }
+  .module-card  { padding: 28px 20px; }
+  .m-title { font-size: 17px; }
+  .m-list li { font-size: 13px; }
+
+  /* steps */
+  .steps-timeline { grid-template-columns: 1fr; gap: 12px; margin-top: 32px; }
+  .steps-timeline .step-card::before { display: none; }
+  .steps-timeline .step-card { padding: 28px 20px; }
+  .s-num   { font-size: 36px; margin-bottom: 10px; }
+  .s-title { font-size: 16px; }
+  .s-body  { font-size: 13px; }
+
+  /* included */
+  .inc-grid  { grid-template-columns: 1fr; gap: 12px; }
+  .inc-card  { padding: 26px 20px; }
+  .inc-title { font-size: 16px; }
+  .inc-body  { font-size: 13px; }
+
+  /* trust */
+  .trust-band { padding: 64px 20px; }
+  .trust-text { font-size: 34px; letter-spacing: -1.5px; }
+
+  /* pricing */
+  .pricing-grid { grid-template-columns: 1fr; gap: 20px; }
+  .price-card   { padding: 40px 24px; }
+  .p-name   { font-size: 20px; }
+  .p-amount { font-size: 60px; }
+  .p-features li { font-size: 14px; padding: 12px 0; }
+  .p-cta    { padding: 18px; font-size: 14px; min-height: 56px; }
+
+  /* guarantee */
+  .guarantee-box { flex-direction: column; gap: 0; padding: 32px 20px; }
+  .g-icon-box    { display: none; }
+  .g-title { font-size: 22px; }
+  .g-body  { font-size: 14px; }
+  .g-note  { font-size: 12px; }
+
+  /* faq */
+  .faq-inner { margin-top: 32px; }
+  .faq-q     { font-size: 14px; padding: 18px 16px; min-height: 56px; gap: 12px; }
+  .faq-a     { font-size: 13px; padding: 14px 16px 18px; }
+  .faq-icon  { width: 26px; height: 26px; font-size: 14px; }
+
+  /* final cta */
+  .final-cta { padding: 72px 20px 100px; }
+  .final-eyebrow { font-size: 9px; }
+  .final-headline { font-size: 44px; letter-spacing: -1.5px; line-height: .98; }
+  .final-headline .stroke { -webkit-text-stroke-width: 1px; }
+  .final-sub  { font-size: 15px; margin-bottom: 32px; }
+  .final-btns { flex-direction: column; gap: 10px; }
+  .final-btns .fp,
+  .final-btns .fs { padding: 18px; font-size: 15px; width: 100%; text-align: center; min-height: 56px; }
+  .final-urgency { font-size: 9px; }
+
+  /* footer */
+  footer { padding: 24px 20px; flex-direction: column; text-align: center; gap: 8px; }
+
+  /* sticky bar */
+  .mob-sticky { display: block; }
+}
+
+/* ═══════════════════════════════
+   TINY SCREENS (≤380px)
+═══════════════════════════════ */
+@media (max-width: 380px) {
+  .urgency-bar { flex-wrap: wrap; }
+  .urgency-bar .u-chunk {
+    border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1);
+    width: 100%; justify-content: center; padding: 8px 16px;
+  }
+  .urgency-bar .u-chunk:last-child { border-bottom: none; }
+  .hero { padding: 40px 16px 48px; }
+  .hero-headline { font-size: 30px; }
+  .hero-tag { font-size: 7px; padding: 5px 10px; }
+  .date-chunk { font-size: 10px; padding: 10px 4px; }
+  .cta-primary { font-size: 14px; padding: 16px; }
+  .section { padding: 52px 16px; }
+  .pain-card { padding: 28px 16px; }
+  .module-card { padding: 24px 16px; }
+  .inc-card { padding: 22px 16px; }
+  .price-card { padding: 36px 18px; }
+  .p-amount { font-size: 52px; }
+  .faq-q { padding: 16px 14px; font-size: 13px; }
+}
+
+/* ═══════════════════════════════
+   OVERFLOW GUARD — all devices
+═══════════════════════════════ */
+.hero-inner > *,
+.inst-grid > *,
+.pain-grid > *,
+.modules-grid > *,
+.outcomes-list > *,
+.steps-timeline > *,
+.inc-grid > *,
+.pricing-grid > * {
+  min-width: 0;
+}
+img, video, iframe, .term-win, .inst-visual {
+  max-width: 100%;
+}
+</style>
+</head>
+<body>
+
+<!-- URGENCY BAR -->
+<div class="urgency-bar">
+  <div class="u-chunk">
+    <span class="u-dot"></span><span>Apr 19 · Live</span>
+  </div>
+  <div class="u-chunk">
+    <span id="countdown">...</span>
+  </div>
+  <div class="u-chunk">
+    <span>Limited Spots</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-sys">
+    <div class="sys-live"><div class="sys-dot"></div>LIVE · Q2.2026</div>
+    <span>EVOLVING_AI · THE_AI_BRIEF</span>
+  </div>
+  <div class="nav-main">
+    <div class="nav-logo"><span class="prompt">~/</span>EVOLVING <span class="box">AI</span></div>
+    <div class="nav-links">
+      <a href="#problem">Why</a>
+      <a href="#curriculum">Curriculum</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#pricing" class="nav-cta">Enroll · $199 →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-dotgrid"></div>
+  <div class="hero-inner">
+
+    <div class="term-win reveal">
+      <div class="term-bar">
+        <div class="term-btns"><div class="tb"></div><div class="tb"></div><div class="tb on"></div></div>
+        <span class="term-label">evolving_ai · workshop_q2_2026</span>
+      </div>
+      <div class="term-body">
+        <span class="tl"><span class="tp">~$ </span><span class="tc">./launch --workshop Q2 --live</span></span>
+        <span class="tb-blank"></span>
+        <span class="to w">╔═══════════════════════════════════╗</span>
+        <span class="to w">║   THE AI BRIEF · Q2 EDITION 2026  ║</span>
+        <span class="to w">╚═══════════════════════════════════╝</span>
+        <span class="tb-blank"></span>
+        <span class="tl"><span class="tp">~$ </span><span class="tc">cat program.json</span></span>
+        <span class="to">type      : "live workshop"</span>
+        <span class="to">date      : "19th April, Sunday, 12PM ET"</span>
+        <span class="to">duration  : "6 hours"</span>
+        <span class="to">format    : "interactive + build session"</span>
+        <span class="to">community : "5,000,000+ members"</span>
+        <span class="tb-blank"></span>
+        <span class="tl"><span class="tp">~$ </span><span class="tc">ls modules/</span></span>
+        <span class="to">01_ai_state_of_play.md         ✓</span>
+        <span class="to">02_advanced_prompting.md       ✓</span>
+        <span class="to">03_production_pipelines.md     ✓</span>
+        <span class="to">04_ai_agents_career.md         ✓</span>
+        <span class="tb-blank"></span>
+        <span class="to w">→ ENROLLMENT OPEN · LIMITED SPOTS</span>
+        <span class="tl"><span class="tp">~$ </span><span class="tc">_</span></span>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-tag reveal"><span class="live-dot"></span>Live · 19th April, Sunday · Q2 Edition</div>
+      <h1 class="hero-headline reveal">
+        Stay Tuned<br>on AI.<br><span class="hero-outline">Every Quarter.</span>
+      </h1>
+      <p class="hero-sub reveal">A live, hands-on workshop built for you by the World's #1 and Largest AI Community so you never miss out again.</p>
+      <div class="hero-date-pill reveal">
+        <span class="date-chunk">Apr 19, Sun</span>
+        <div class="date-sep"></div>
+        <span class="date-chunk">12PM ET</span>
+        <div class="date-sep"></div>
+        <span class="date-chunk">6 Hrs · Live</span>
+      </div>
+      <div class="hero-ctas reveal">
+        <a href="#pricing" class="cta-primary">Enroll Now · Starting at $199 →</a>
+        <a href="#curriculum" class="cta-secondary">See What's Covered ↓</a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- PROOF STRIP -->
+<div class="proof-strip reveal">
+  <div class="proof-strip-inner">
+    <div class="proof-item proof-item-date">
+      <div class="proof-num">#1</div>
+      <div class="proof-txt">Most Followed<br>AI Page on Instagram</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">5M+</div>
+      <div class="proof-txt">Followers across<br>all platforms</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">100K+</div>
+      <div class="proof-txt">Weekly newsletter<br>readers</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">200+</div>
+      <div class="proof-txt">Brand Partners</div>
+      <div class="proof-partners">Adobe · Meta</div>
+    </div>
+    <div class="proof-item">
+      <div class="proof-num">250M+</div>
+      <div class="proof-txt">Monthly views across<br>all social media</div>
+    </div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="m-inner">
+    <span class="hi">THE_AI_BRIEF</span><span>///</span><span>Q2_EDITION</span><span>///</span><span class="hi">LIVE_WORKSHOP</span><span>///</span><span>APRIL_12TH</span><span>///</span><span class="hi">6_HOURS</span><span>///</span><span>PROMPTING_MASTERY</span><span>///</span><span class="hi">AI_AGENTS</span><span>///</span><span>LIVE_PIPELINES</span><span>///</span><span class="hi">BUILD_LIVE</span><span>///</span><span>NO_FLUFF</span><span>///</span>
+    <span class="hi">THE_AI_BRIEF</span><span>///</span><span>Q2_EDITION</span><span>///</span><span class="hi">LIVE_WORKSHOP</span><span>///</span><span>APRIL_12TH</span><span>///</span><span class="hi">6_HOURS</span><span>///</span><span>PROMPTING_MASTERY</span><span>///</span><span class="hi">AI_AGENTS</span><span>///</span><span>LIVE_PIPELINES</span><span>///</span><span class="hi">BUILD_LIVE</span><span>///</span><span>NO_FLUFF</span><span>///</span>
+  </div>
+</div>
+
+<!-- PROBLEM / VISION -->
+<section class="section pv-section" id="problem">
+  <div class="sec-tag reveal">01 // Why This Exists</div>
+  <h2 class="pain-headline reveal">Don't just keep watching AI pass by you.<br><span class="stroke">Keep up with it.</span></h2>
+  <div class="pain-grid">
+
+    <div class="pain-card reveal">
+      <div class="pain-card-label"><span class="label-dot off"></span>The Problem</div>
+      <div class="pain-title">Sound familiar?</div>
+      <p class="pain-body">You follow the right accounts. You see the posts. You know AI is moving fast. But at some point, you realize scrolling is not enough. You need to actually start using AI now.</p>
+      <ul class="pain-list">
+        <li><span class="pain-marker">·</span>You know ChatGPT, Claude, Gemini, but you're not sure which one to use for what</li>
+        <li><span class="pain-marker">·</span>Your workflow hasn't changed much post AI</li>
+        <li><span class="pain-marker">·</span>You've saved a dozen "useful AI threads" you haven't opened since</li>
+        <li><span class="pain-marker">·</span>You wish someone would just tell you: here's what matters, here's how to use it</li>
+        <li><span class="pain-marker">·</span>You're not sure what's genuinely useful vs. what's just hype this quarter</li>
+      </ul>
+      <p class="pain-foot">This feeling is exactly why we built The AI Brief</p>
+    </div>
+
+    <div class="pain-card vision reveal">
+      <div class="pain-card-label"><span class="label-dot on"></span>The Vision</div>
+      <div class="pain-title">Imagine starting this quarter ahead.</div>
+      <p class="pain-body">6 focused hours that did all the filtering for you. Here's what changes:</p>
+      <ul class="pain-list vision-list">
+        <li><span class="pain-marker check">✓</span>You know exactly what shifted in AI last quarter and what to ignore</li>
+        <li><span class="pain-marker check">✓</span>You have 2-3 live AI workflows you can put to use immediately</li>
+        <li><span class="pain-marker check">✓</span>You can speak confidently about AI with colleagues, clients, or your team</li>
+        <li><span class="pain-marker check">✓</span>You're not learning AI in theory anymore. You're doing it with a community around you</li>
+        <li><span class="pain-marker check">✓</span>Every quarter, you compound. The gap between you and everyone else keeps growing</li>
+      </ul>
+      <p class="pain-foot">That's what The AI Brief is built to give you, every single quarter.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- INSTRUCTOR -->
+<section class="section" id="about">
+  <div class="sec-tag reveal">02 // Your Instructors</div>
+  <div class="inst-grid">
+    <div class="inst-visual reveal">
+      <div class="inst-term-bar"><div class="itb"></div><div class="itb"></div><div class="itb on"></div></div>
+      <div class="inst-visual-body">
+        <div class="inst-brand">EVOLVING <span class="inst-brand-box">AI</span></div>
+        <div class="inst-tagline">// World's #1 AI Community</div>
+      </div>
+    </div>
+    <div class="reveal">
+      <h2 class="inst-name">The Evolving AI Team</h2>
+      <div class="inst-role">Hosts of the World's #1 AI Community</div>
+      <div class="inst-desc">
+        <p>Evolving AI is the World's #1 AI community. Over 5 million people across all platforms trust us because we cut the noise and show you what actually matters in AI.</p>
+        <p>The AI Brief is where that curation goes live. Same clarity, same community. Now you build with it, not just read about it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUTCOMES -->
+<section class="section dark" id="outcomes">
+  <div class="sec-tag reveal">03 // What You Walk Away With</div>
+  <h2 class="sec-head reveal">After 6 hours,<br>here's what changes.</h2>
+  <div class="outcomes-list">
+    <div class="outcome-row reveal">
+      <div class="outcome-row-num">01</div>
+      <div class="outcome-row-body">
+        <div class="outcome-row-title">A clear map of AI in 2026. No noise, only signal.</div>
+        <div class="outcome-row-desc">Which tools matter. What shifted. What to ignore.</div>
+      </div>
+    </div>
+    <div class="outcome-row reveal">
+      <div class="outcome-row-num">02</div>
+      <div class="outcome-row-body">
+        <div class="outcome-row-title">2-3 live AI workflows, built and ready.</div>
+        <div class="outcome-row-desc">Content machine. Research report. Video and ad production.</div>
+      </div>
+    </div>
+    <div class="outcome-row reveal">
+      <div class="outcome-row-num">03</div>
+      <div class="outcome-row-body">
+        <div class="outcome-row-title">Prompting skills that make every AI tool 10x more useful.</div>
+        <div class="outcome-row-desc">Text, image, and video. The full professional framework.</div>
+      </div>
+    </div>
+    <div class="outcome-row reveal">
+      <div class="outcome-row-num">04</div>
+      <div class="outcome-row-body">
+        <div class="outcome-row-title">A career edge that compounds every quarter you show up.</div>
+        <div class="outcome-row-desc">Know what AI can't replace. Build your personal AI radar.</div>
+      </div>
+    </div>
+    <div class="outcome-row reveal">
+      <div class="outcome-row-num">05</div>
+      <div class="outcome-row-body">
+        <div class="outcome-row-title">AI Agents: understand them and build your first automation.</div>
+        <div class="outcome-row-desc">Not theory. You'll set up a working agent during the session itself.</div>
+      </div>
+    </div>
+  </div>
+  <div class="section-cta-wrap reveal">
+    <a href="#pricing" class="cta-primary">I Want These Outcomes →</a>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section class="section alt" id="curriculum">
+  <div class="sec-tag reveal">04 // Curriculum</div>
+  <h2 class="sec-head reveal">4 Modules.<br>6 Hours. <span class="stroke">Built for Q2 2026.</span></h2>
+  <div class="modules-grid">
+    <div class="module-card reveal" data-module>
+      <div class="module-hdr m-trigger"><div class="m-tag">Module 01</div><span class="m-chevron">+</span></div>
+      <div class="m-title">AI State of Play: The Q1 2026 Debrief</div>
+      <ul class="m-list m-body">
+        <li>How AI actually works. No technical background needed</li>
+        <li>Which AI tools to use and when. A practical decision guide</li>
+        <li>Every development that mattered in Q1 2026, curated</li>
+      </ul>
+    </div>
+    <div class="module-card reveal" data-module>
+      <div class="module-hdr m-trigger"><div class="m-tag">Module 02</div><span class="m-chevron">+</span></div>
+      <div class="m-title">Advanced Prompting: Text, Image and Video</div>
+      <ul class="m-list m-body">
+        <li>The text prompting framework used by the top 1% of AI users</li>
+        <li>Image prompting from basics to advanced creative control</li>
+        <li>Video prompting: the frontier most people haven't touched yet</li>
+      </ul>
+    </div>
+    <div class="module-card reveal" data-module>
+      <div class="module-hdr m-trigger"><div class="m-tag">Module 03</div><span class="m-chevron">+</span></div>
+      <div class="m-title">Applied AI Workflows: Live Production Pipelines</div>
+      <ul class="m-list m-body">
+        <li><strong>Pipeline 1:</strong> AI Content Machine</li>
+        <li><strong>Pipeline 2:</strong> AI Research Report</li>
+        <li><strong>Pipeline 3:</strong> AI Video and Ad Production</li>
+      </ul>
+    </div>
+    <div class="module-card reveal" data-module>
+      <div class="module-hdr m-trigger"><div class="m-tag">Module 04</div><span class="m-chevron">+</span></div>
+      <div class="m-title">AI Agents and Automations: The Future-Proof Professional</div>
+      <ul class="m-list m-body">
+        <li>How AI agents work and how to build your first automation</li>
+        <li>What AI cannot replicate, and why that's your advantage</li>
+        <li>Build a personal AI radar so you stay ahead every quarter</li>
+      </ul>
+    </div>
+  </div>
+  <div class="section-cta-wrap reveal">
+    <a href="#pricing" class="cta-primary">Save My Spot →</a>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="sec-tag reveal">05 // How It Works</div>
+  <h2 class="sec-head reveal">From registration<br>to <span class="stroke">results in 4 steps.</span></h2>
+  <div class="steps-timeline">
+    <div class="step-card reveal">
+      <div class="s-num">01</div>
+      <div class="s-title">Register</div>
+      <p class="s-body">2 minutes. Welcome email sent instantly.</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="s-num">02</div>
+      <div class="s-title">Show Up<br>Apr 19 · 12PM ET</div>
+      <p class="s-body">6 hours, live. Interactive and built for doing.</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="s-num">03</div>
+      <div class="s-title">Build Live</div>
+      <p class="s-body">Build 3 real AI pipelines during the session.</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="s-num">04</div>
+      <div class="s-title">Claim Resources</div>
+      <p class="s-body">Recordings, templates and toolkit. Yours to keep.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUDED -->
+<section class="section alt" id="included">
+  <div class="sec-tag reveal">06 // What's Included</div>
+  <h2 class="sec-head reveal">Everything you get<br>when you <span class="stroke">register.</span></h2>
+  <div class="inc-grid">
+    <div class="inc-card reveal">
+      <div class="inc-hdr"><div class="inc-idx">File 01</div><div class="inc-glyph">PDF</div></div>
+      <div class="inc-title">Full Slide Deck PDF</div>
+      <p class="inc-body">All modules and resources in one downloadable deck.</p>
+    </div>
+    <div class="inc-card reveal">
+      <div class="inc-hdr"><div class="inc-idx">File 02</div><div class="inc-glyph">LIB</div></div>
+      <div class="inc-title">Prompt Library</div>
+      <p class="inc-body">75+ proven prompts organised by use case.</p>
+    </div>
+    <div class="inc-card reveal">
+      <div class="inc-hdr"><div class="inc-idx">File 03</div><div class="inc-glyph">REC</div></div>
+      <div class="inc-title">Full Workshop Recording</div>
+      <p class="inc-body">Recording delivered within 24 hours. 90-day access.</p>
+    </div>
+    <div class="inc-card reveal">
+      <div class="inc-hdr"><div class="inc-idx">File 04</div><div class="inc-glyph">COM</div></div>
+      <div class="inc-title">Private Community</div>
+      <p class="inc-body">A private space with professionals who take AI seriously.</p>
+    </div>
+    <div class="inc-card reveal">
+      <div class="inc-hdr"><div class="inc-idx">File 05</div><div class="inc-glyph">TPL</div></div>
+      <div class="inc-title">Workflow Cracker Template</div>
+      <p class="inc-body">The Module 3 exercise template. Replicate every pipeline yourself.</p>
+    </div>
+    <div class="inc-card reveal">
+      <div class="inc-hdr"><div class="inc-idx">File 06</div><div class="inc-glyph">VIP</div></div>
+      <div class="inc-title">VIP Support</div>
+      <p class="inc-body">1-on-1 AI Audit Call (30 min, on request) + Q3 2026 early bird discount.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAND -->
+<div class="trust-band reveal">
+  <div class="trust-text">
+    A COMMUNITY<br>TRUSTED BY<br><span class="stroke">5,000,000+</span><br>PROFESSIONALS
+  </div>
+</div>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="sec-tag reveal">07 // Pricing</div>
+  <h2 class="sec-head reveal">One Workshop.<br><span class="stroke">One Price.</span></h2>
+  <div class="pricing-wrapper pricing-single">
+    <div class="price-card feat reveal">
+      <div class="p-tier">The AI Brief · Q2 2026</div>
+      <div class="p-name">Live Workshop</div>
+      <div class="p-price-row"><span class="p-dollar">$</span><span class="p-amount">199</span></div>
+      <span class="p-period">One-time · April 19th · 12PM ET</span>
+      <div class="p-divider"></div>
+      <ul class="p-features">
+        <li>Live 6-hour workshop · 19th April, 12PM ET</li>
+        <li>Full workshop recording · 90 days access</li>
+        <li>Private community access</li>
+        <li>Full slide deck PDF · all modules and resources</li>
+        <li>75+ Prompt Library</li>
+        <li>Workflow Cracker Template</li>
+      </ul>
+      <a href="https://evolving-ai.circle.so/checkout/q22026" class="p-cta">Enroll Now · $199 →</a>
+    </div>
+    <p class="pricing-footnote reveal">Secure checkout · Instant confirmation · 100% refund guarantee</p>
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<section class="section alt">
+  <div class="guarantee-box reveal">
+    <div class="g-icon-box">§</div>
+    <div>
+      <h3 class="g-title">100% Satisfaction Guarantee</h3>
+      <p class="g-body"><strong>If you attend The AI Brief and don't feel the workshop was valuable, tell us and we'll refund you in full. No questions asked. We've spent years building the world's most trusted AI community. This workshop is held to the same standard.</strong></p>
+      <p class="g-note">This removes all risk from your decision and places the responsibility on us to deliver.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="sec-tag reveal">08 // FAQ</div>
+  <h2 class="sec-head reveal">Got Questions?<br><span class="stroke">We've Got Answers.</span></h2>
+  <div class="faq-inner">
+    <div class="faq-item reveal">
+      <div class="faq-q"><span class="faq-q-text">What roles is this designed for?</span><span class="faq-icon">+</span></div>
+      <p class="faq-a">PMs, Founders, Developers, Marketers, Designers, Operators. Every module includes role-specific tracks so the content is relevant to your work.</p>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q"><span class="faq-q-text">What exactly do I walk away with?</span><span class="faq-icon">+</span></div>
+      <p class="faq-a">75+ prompt library, workflow templates, full slide deck, 90-day recording access, the Workflow Cracker Template, and access to the private community.</p>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q"><span class="faq-q-text">What if I can't attend live on April 19th?</span><span class="faq-icon">+</span></div>
+      <p class="faq-a">Every registered attendee gets the full recording within 24 hours. Attending live means you can ask questions and participate in the build session in real time.</p>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q"><span class="faq-q-text">Is this for beginners or do I need prior AI experience?</span><span class="faq-icon">+</span></div>
+      <p class="faq-a">No coding required. No prior courses needed. Built for professionals who follow AI and want to go from aware to actually using it.</p>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q"><span class="faq-q-text">How is this different from the Evolving AI Instagram content?</span><span class="faq-icon">+</span></div>
+      <p class="faq-a">Instagram keeps you informed. The AI Brief gets you doing. It's live, you build real things, and the recordings and resources are yours to keep.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="final-eyebrow reveal">One decision. One Sunday. Every quarter.</div>
+  <h2 class="final-headline reveal">The gap between you<br>and everyone else<br><span class="stroke">starts here.</span></h2>
+  <p class="final-sub reveal">AI is not slowing down. The people who show up every quarter will compound. The people who don't will catch up later — at twice the cost.</p>
+  <div class="final-btns reveal">
+    <a href="#pricing" class="fp">Enroll Now · Starting at $199 →</a>
+    <a href="#faq" class="fs">Read the FAQ first</a>
+  </div>
+  <p class="final-urgency reveal">Secure checkout</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Evolving AI</span>
+  <span>The AI Brief · Q2 · April 19th, 12PM ET</span>
+</footer>
+
+<!-- MOBILE STICKY CTA -->
+<div class="mob-sticky">
+  <div class="mob-sticky-meta">
+    <span>The AI Brief · Q2 Edition</span>
+    <span>Apr 19 · 12PM ET</span>
+  </div>
+  <a href="#pricing" class="mob-sticky-btn">Enroll Now · Save My Spot →</a>
+</div>
+
+<script>
+/* MODULE ACCORDION — tablet and mobile only */
+document.querySelectorAll('[data-module]').forEach(card => {
+  card.addEventListener('click', () => {
+    if (window.innerWidth > 1024) return;
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('[data-module]').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  });
+});
+
+/* COUNTDOWN */
+function updateCountdown() {
+  const target = new Date('2026-04-19T12:00:00-04:00');
+  const now = new Date();
+  const diff = target - now;
+  if (diff <= 0) { document.getElementById('countdown').textContent = 'Live Now!'; return; }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('countdown').textContent =
+    `${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* SCROLL REVEAL */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* FAQ */
+document.querySelectorAll('.faq-item').forEach(item => {
+  const a = item.querySelector('.faq-a');
+  const icon = item.querySelector('.faq-icon');
+  item.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-a').style.display = 'none';
+      i.querySelector('.faq-icon').textContent = '+';
+    });
+    if (!isOpen) { item.classList.add('open'); a.style.display = 'block'; icon.textContent = '−'; }
+  });
+});
+
+/* HIDE MOBILE STICKY WHEN HERO CTA IS VISIBLE */
+const heroCta = document.querySelector('.hero-ctas');
+const mobBar  = document.querySelector('.mob-sticky');
+const footerEl = document.querySelector('footer');
+if (mobBar) {
+  mobBar.style.transition = 'transform .3s ease';
+  // Start hidden — only show once user scrolls past hero CTAs
+  mobBar.style.transform = 'translateY(100%)';
+
+  const showHideObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        mobBar.style.transform = 'translateY(100%)'; // hide
+      } else {
+        mobBar.style.transform = 'translateY(0)'; // show
+      }
+    });
+  }, { threshold: 0, rootMargin: '0px 0px -20px 0px' });
+
+  if (heroCta)  showHideObs.observe(heroCta);
+
+  // Also hide near footer
+  const footerObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) mobBar.style.transform = 'translateY(100%)';
+    });
+  }, { threshold: 0.1 });
+  if (footerEl) footerObs.observe(footerEl);
+}
+</script>
+</body>
+</html>
